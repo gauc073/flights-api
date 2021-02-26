@@ -1,9 +1,11 @@
 package com.apis.flightapis.model;
 
 
+import java.util.UUID;
+
 public class Flight {
 //	@value("$(library.api.user.admin.username:lib-admin)")
-	private String flightId;
+	private UUID flightId;
 	private String airlineName;
 	private String flightNumber;
 	private String originAirport;
@@ -14,12 +16,13 @@ public class Flight {
 	private String arrivalDateAndTime;
 	private String cabins;
 	private String cabinClass;
-	
+	private int numberOfSeats;
+
 	public Flight() {
 		
 	}
 	
-	public Flight(String flightId, String airlineName, String flightNumber, String originAirport, String originAirportCode,
+	public Flight(UUID flightId, String airlineName, String flightNumber, String originAirport, String originAirportCode,
 			String destinationAirport, String destinationAirportCode, String departureDateAndTime,
 			String arrivalDateAndTime, String cabins, String cabinClass, int numberOfSeats) {
 		super();
@@ -103,11 +106,11 @@ public class Flight {
 		this.numberOfSeats = numberOfSeats;
 	}
 	public String getFlightId() {
-		return flightId;
+		return flightId.toString();
 	}
 
-	public void setFlightId(String flightId) {
+	public void setFlightId(UUID flightId) {
 		this.flightId = flightId;
 	}
-	private int numberOfSeats;
+
 }
