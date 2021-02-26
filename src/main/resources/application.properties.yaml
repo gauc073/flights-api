@@ -1,0 +1,9 @@
+server: 
+   port: 8080
+   tomcat:
+      accesslog:
+         file-data-format: 
+         
+spring:
+   activemq:
+      broker-url: 
