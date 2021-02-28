@@ -17,6 +17,8 @@ public class FlightEntity {
     @Column(name = "Flight_Number")
     private String flightNumber;
 
+    public FlightEntity () {}
+
     public FlightEntity(String airlineName, String flightNumber, String originAirport, String originAirportCode, String destinationAirport, String destinationAirportCode, String departureDateAndTime, String arrivalDateAndTime, String cabins, String cabinClass, int numberOfSeats) {
         this.airlineName = airlineName;
         this.flightNumber = flightNumber;
