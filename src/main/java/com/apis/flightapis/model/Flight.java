@@ -1,22 +1,43 @@
 package com.apis.flightapis.model;
 
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 public class Flight {
     private UUID flightId;
+    @NotNull
+    @Size(min = 3, max = 50, message = "airline name must be between 1 and 50 characters")
     private String airlineName;
+    @NotNull
+    @Size(min = 3, max = 50, message = "flight number name must be between 1 and 50 characters")
     private String flightNumber;
+    @NotNull
+    @Size(min = 3, max = 50, message = "origin airport must be between 1 and 50 characters")
     private String originAirport;
+    @NotNull
+    @Size(min = 3, max = 50, message = "origin airport code must be between 1 and 50 characters")
     private String originAirportCode;
+    @NotNull
+    @Size(min = 3, max = 50, message = "destination airport must be between 1 and 50 characters")
     private String destinationAirport;
+    @NotNull
+    @Size(min = 3, max = 50, message = "destination airport code must be between 1 and 50 characters")
     private String destinationAirportCode;
+    @NotNull
+    @Size(min = 10, max = 50, message = "departure date and time must be between 1 and 50 characters")
     private String departureDateAndTime;
+    @NotNull
+    @Size(min = 10, max = 50, message = "arrival date and time must be between 1 and 50 characters")
     private String arrivalDateAndTime;
+    @NotNull
+    @Size(min = 3, max = 50, message = "cabins must be between 1 and 50 characters")
     private String cabins;
+    @NotNull
+    @Size(min = 3, max = 50, message = "cabin class must be between 1 and 50 characters")
     private String cabinClass;
     private int numberOfSeats;
-
     public Flight() {
 
     }
@@ -37,6 +58,24 @@ public class Flight {
         this.cabins = cabins;
         this.cabinClass = cabinClass;
         this.numberOfSeats = numberOfSeats;
+    }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "flightId=" + flightId +
+                ", airlineName='" + airlineName + '\'' +
+                ", flightNumber='" + flightNumber + '\'' +
+                ", originAirport='" + originAirport + '\'' +
+                ", originAirportCode='" + originAirportCode + '\'' +
+                ", destinationAirport='" + destinationAirport + '\'' +
+                ", destinationAirportCode='" + destinationAirportCode + '\'' +
+                ", departureDateAndTime='" + departureDateAndTime + '\'' +
+                ", arrivalDateAndTime='" + arrivalDateAndTime + '\'' +
+                ", cabins='" + cabins + '\'' +
+                ", cabinClass='" + cabinClass + '\'' +
+                ", numberOfSeats=" + numberOfSeats +
+                '}';
     }
 
     public String getAirlineName() {

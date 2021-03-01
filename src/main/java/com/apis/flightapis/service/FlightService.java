@@ -1,11 +1,13 @@
 package com.apis.flightapis.service;
 
 import com.apis.flightapis.entity.FlightEntity;
-import com.apis.flightapis.exception.LibraryResourceAlreadyExistsException;
-import com.apis.flightapis.exception.LibraryResourceNotFoundException;
+import com.apis.flightapis.exception.FlightResourceAlreadyExistsException;
+import com.apis.flightapis.exception.FlightResourceNotFoundException;
 import com.apis.flightapis.model.Flight;
 import com.apis.flightapis.repositories.FlightRepository;
 import com.apis.flightapis.utils.FlightUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class FlightService {
     private final FlightRepository flightRepository;
+    private final Logger logger = LoggerFactory.getLogger(FlightService.class);
 
     public FlightService(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
@@ -56,14 +59,15 @@ public class FlightService {
         flightEntity.setNumberOfSeats(flight.getNumberOfSeats());
     }
 
-    public Flight getFlight(UUID flightId) throws LibraryResourceNotFoundException {
+    public Flight getFlight(UUID flightId, String traceId) throws FlightResourceNotFoundException {
 
         FlightEntity flightEntity;
         Optional<FlightEntity> optional = flightRepository.findById(flightId);
         if (optional.isPresent()) {
             flightEntity = optional.get();
         } else {
-            throw new LibraryResourceNotFoundException("Flight Does not Found!!");
+            logger.error("TraceId: {}, Flight Does not Found!!", traceId);
+            throw new FlightResourceNotFoundException(traceId, "Flight Does not Found!!");
         }
         return flightFromFlightEntity(flightEntity);
 
@@ -86,7 +90,7 @@ public class FlightService {
         return flight;
     }
 
-    public void addFlight(Flight flightToBeAdded) throws LibraryResourceAlreadyExistsException {
+    public void addFlight(Flight flightToBeAdded, String traceId) throws FlightResourceAlreadyExistsException {
 
         FlightEntity flightEntity = new FlightEntity(
                 flightToBeAdded.getAirlineName(), flightToBeAdded.getFlightNumber(),
@@ -101,13 +105,14 @@ public class FlightService {
         try {
             addedFlightEntity = flightRepository.save(flightEntity);
         } catch (DataIntegrityViolationException e) {
-            throw new LibraryResourceAlreadyExistsException("Flight Already Exists!!");
+            logger.error("TraceId: {}, {}", traceId, e.getMessage());
+            throw new FlightResourceAlreadyExistsException(traceId, "Flight Already Exists!!");
         }
 
         flightToBeAdded.setFlightId(addedFlightEntity.getFlightId());
     }
 
-    public void updateFlight(Flight flightToBeUpdated) throws LibraryResourceNotFoundException {
+    public void updateFlight(Flight flightToBeUpdated, String traceId) throws FlightResourceNotFoundException {
         Optional<FlightEntity> optionalFlightEntity = flightRepository.findById(flightToBeUpdated.getFlightId());
         try {
             if (optionalFlightEntity.isPresent()) {
@@ -115,19 +120,23 @@ public class FlightService {
                 FlightService.updateRecord(flightEntity, flightToBeUpdated);
                 flightRepository.save(flightEntity);
                 flightToBeUpdated = flightFromFlightEntity(flightEntity);
+                logger.info("TraceId: {}, Flight ID-> {} Updated", traceId, flightToBeUpdated.getFlightId());
             } else {
-                throw new LibraryResourceNotFoundException("Flight ID-> " + flightToBeUpdated.getFlightId() + " Not Found");
+                logger.error("TraceId: {}, Flight ID-> {} Not Found", traceId, flightToBeUpdated.getFlightId());
+                throw new FlightResourceNotFoundException(traceId, "Flight ID-> " + flightToBeUpdated.getFlightId() + " Not Found");
             }
         } catch (Exception e) {
-            throw new LibraryResourceNotFoundException("SQLIntegrityConstraintViolationException occurred");
+            logger.error("TraceId:  {}, {}", traceId, e.getMessage());
+            throw new FlightResourceNotFoundException(traceId, e.getMessage());
         }
     }
 
-    public void deleteFlight(UUID flightId) throws LibraryResourceNotFoundException {
+    public void deleteFlight(UUID flightId, String traceId) throws FlightResourceNotFoundException {
         try {
             flightRepository.deleteById(flightId);
         } catch (EmptyResultDataAccessException e) {
-            throw new LibraryResourceNotFoundException("Flight ID-> " + flightId + " Not Found");
+            logger.error("TraceId: {}, Flight ID-> {} Not Found", traceId, flightId);
+            throw new FlightResourceNotFoundException(traceId, "Flight ID-> " + flightId + " Not Found");
         }
     }
 

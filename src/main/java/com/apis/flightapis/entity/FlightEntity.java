@@ -10,14 +10,31 @@ public class FlightEntity {
     @Id
     @GeneratedValue
     private UUID flightId;
-
     @Column(name = "Airline_Name")
     private String airlineName;
-
     @Column(name = "Flight_Number")
     private String flightNumber;
+    @Column(name = "Origin_Airport")
+    private String originAirport;
+    @Column(name = "Origin_Airport_Code")
+    private String originAirportCode;
+    @Column(name = "Destination_Airport")
+    private String destinationAirport;
+    @Column(name = "Destination_Airport_Code")
+    private String destinationAirportCode;
+    @Column(name = "Departure_Date_And_Time")
+    private String departureDateAndTime;
+    @Column(name = "Arrival_Date_And_Time")
+    private String arrivalDateAndTime;
+    @Column(name = "Cabins")
+    private String cabins;
+    @Column(name = "Cabin_Class")
+    private String cabinClass;
+    @Column(name = "Number_Of_Seats")
+    private int numberOfSeats;
 
-    public FlightEntity () {}
+    public FlightEntity() {
+    }
 
     public FlightEntity(String airlineName, String flightNumber, String originAirport, String originAirportCode, String destinationAirport, String destinationAirportCode, String departureDateAndTime, String arrivalDateAndTime, String cabins, String cabinClass, int numberOfSeats) {
         this.airlineName = airlineName;
@@ -33,35 +50,12 @@ public class FlightEntity {
         this.numberOfSeats = numberOfSeats;
     }
 
-    @Column(name = "Origin_Airport")
-    private String originAirport;
-
-    @Column(name = "Origin_Airport_Code")
-    private String originAirportCode;
-
-    @Column(name = "Destination_Airport")
-    private String destinationAirport;
-
-    @Column(name = "Destination_Airport_Code")
-    private String destinationAirportCode;
-
-    @Column(name = "Departure_Date_And_Time")
-    private String departureDateAndTime;
-
-    @Column(name = "Arrival_Date_And_Time")
-    private String arrivalDateAndTime;
-
-    @Column(name = "Cabins")
-    private String cabins;
-
-    @Column(name = "Cabin_Class")
-    private String cabinClass;
-
-    @Column(name = "Number_Of_Seats")
-    private int numberOfSeats;
-
     public UUID getFlightId() {
         return flightId;
+    }
+
+    public void setFlightId(UUID flightId) {
+        this.flightId = flightId;
     }
 
     public String getAirlineName() {
@@ -142,6 +136,24 @@ public class FlightEntity {
 
     public void setCabinClass(String cabinClass) {
         this.cabinClass = cabinClass;
+    }
+
+    @Override
+    public String toString() {
+        return "FlightEntity{" +
+                "flightId=" + flightId +
+                ", airlineName='" + airlineName + '\'' +
+                ", flightNumber='" + flightNumber + '\'' +
+                ", originAirport='" + originAirport + '\'' +
+                ", originAirportCode='" + originAirportCode + '\'' +
+                ", destinationAirport='" + destinationAirport + '\'' +
+                ", destinationAirportCode='" + destinationAirportCode + '\'' +
+                ", departureDateAndTime='" + departureDateAndTime + '\'' +
+                ", arrivalDateAndTime='" + arrivalDateAndTime + '\'' +
+                ", cabins='" + cabins + '\'' +
+                ", cabinClass='" + cabinClass + '\'' +
+                ", numberOfSeats=" + numberOfSeats +
+                '}';
     }
 
     public int getNumberOfSeats() {
